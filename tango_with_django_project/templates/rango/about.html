@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-{% load static %}
+{% extends 'rango/base.html' %}
 
-<html>
+{% load staticfiles %}
 
-	<head>
-		<title>Rango</title>
-	</head>
-	
-	<body>
+{% block title %}Rango{% endblock %}
+
+{% block body_block %}
 		<h1>Rango says...</h1>
 		<strong>{{ boldmessage }}</strong><br />
-		<a href="/rango/">Main page</a><br />
+		<a href="{% url 'index' %}">Main page</a><br />
 		<img src="{% static "images/about.jpg" %}" alt="Picture of the world" width="50%" height="50%"/>
-	</body>
-	
-</html>
+{% endblock %}

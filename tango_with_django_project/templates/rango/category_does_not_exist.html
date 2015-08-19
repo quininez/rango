@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Rango</title>
-	</head>
-	
-	<body>
-		<h1>Oops, you seem to have lost your way.</h1>
-		<a href="/rango/">Go back home</a>
-	</body>
+{% extends 'rango/base.html' %}
 
-</html>	
-	
-		
-		
+{% load staticfiles %}
+
+{% block title %}Rango{% endblock %}
+
+{% block body_block %}
+		<h1>Oops, you seem to have lost your way.</h1>
+		<a href="{% url 'index' %}">Go back home</a>
+{% endblock %}

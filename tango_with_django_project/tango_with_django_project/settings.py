@@ -54,6 +54,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'tango_with_django_project.urls'
 
 TEMPLATE_PATH = os.path.join(BASE_DIR, 'templates')
+print(TEMPLATE_PATH);
 
 TEMPLATE_DIRS = (
 	#C:/Users/Dell/code/tango_with_django_project/templates
@@ -63,7 +64,7 @@ TEMPLATE_DIRS = (
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_PATH],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -117,3 +118,5 @@ STATICFILES_DIRS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+LOGIN_URL = "/rango/login/"

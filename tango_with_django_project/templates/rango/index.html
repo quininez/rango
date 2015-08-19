@@ -1,19 +1,21 @@
-<!DOCTYPE html>
-{% load static %}
+{% extends 'rango/base.html' %}
 
-<html>
+{% load staticfiles %}
 
-	<head>
-		<title>Rango</title>
-	</head>
-	
-	<body>
-		<h1>Rango says...hello world!</h1>
+{% block title %}Rango{% endblock %}
+
+{% block body_block %}
+
+		{% if user.is_authenticated %}
+		<h1>Rango says...hello {{ user.username }}!</h1>
+		{% else %}
+		<h1>Rango says..hello world!</h1>
+		{% endif %}
 		
 		{% if categories %}
 			<ul>
 				{% for category in categories %}
-				<li><a href="/rango/category/{{ category.slug }}">{{ category.name }}</a></li>
+				<li><a href="{% url 'category' category.slug%}">{{ category.name }}</a></li>
 				{% endfor %}
 			</ul>
 		{% else %}
@@ -32,12 +34,5 @@
 			<strong>There are no pages present.</strong>
 		{% endif %}
 		
-		
-		
-		<a href="/rango/add_category/">Add a New Category</a><br />
-		
-		<a href="/rango/about/">About</a><br />
 		<img src="{% static "images/background.gif" %}" alt="Picture of the world" />
-	</body>
-	
-</html>
+{% endblock %}

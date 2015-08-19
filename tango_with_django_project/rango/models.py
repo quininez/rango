@@ -1,5 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.contrib.auth.models import User
 
 class Category(models.Model):
 	name = models.CharField(max_length=128, unique=True)
@@ -14,7 +15,7 @@ class Category(models.Model):
 		self.slug = slugify(self.name)
 		super(Category, self).save(*args, **kwargs)
 
-	def __unicode__(self):
+	def __str__(self):
 		return self.name
 		
 class Page(models.Model):
@@ -25,4 +26,14 @@ class Page(models.Model):
 	
 	def __str__(self):
 		return self.title
+
+class UserProfile(models.Model):
+	#link userprofile to an instance of user
+	user = models.OneToOneField(User)
+	#attributes we want added to the user model
+	website = models.URLField(blank=True)
+	picture = models.ImageField(upload_to="profile_images", blank=True)
+	def __str__(self):
+		return self.user.username
+
 
