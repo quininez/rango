@@ -2,11 +2,16 @@
 
 {% load staticfiles %}
 
-{% block title %}Rango{% endblock %}
+{% block title %}About{% endblock %}
 
 {% block body_block %}
-		<h1>Rango says...</h1>
-		<strong>{{ boldmessage }}</strong><br />
-		<a href="{% url 'index' %}">Main page</a><br />
-		<img src="{% static "images/about.jpg" %}" alt="Picture of the world" width="50%" height="50%"/>
+	<div class="jumbotron">
+			<h1>About</h1>
+			
+			
+            <p></strong>{{ boldmessage }}</p>
+            <p>You have visited us {{ visits }} times.</p>	
+
+            <img  width="30%" height="30%" src="{% static "images/about.jpg" %}" alt="Picture of the world" /> <!-- New line -->
+     </div>       
 {% endblock %}
