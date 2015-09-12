@@ -44,18 +44,20 @@
                         <li><a href="{% url 'auth_login' %}">Login</a></li>
                     {% endif %}
                                 <li><a href="{% url 'about' %}">About</a></li>
+                                <li><a href="{% url 'search' %}">Search</a></li>
 
               </ul>
         </div>
       </div>
     </div>
     
-
+    {% load rango_extras %}
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-                {% block side_block %}{% endblock %}
-
+                {% block side_block %}
+                {% get_category_list category %}
+                {% endblock %}
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
            <div>
