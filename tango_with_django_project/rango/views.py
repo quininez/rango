@@ -1,9 +1,13 @@
 from datetime import datetime
 
+from django.template import RequestContext
+from django.shortcuts import render_to_response
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from rango.models import UserProfile
 
 from rango.models import Category, Page
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
@@ -59,19 +63,33 @@ def about(request):
 
 def category(request, category_name_slug):
 	context_dict ={}
-	
+	context_dict['result_list'] = None
+	context_dict['query'] = None
 	
 	try:
 		category = Category.objects.get(slug=category_name_slug)
 		context_dict['category_name'] = category.name
 		context_dict['category_name_slug'] = category_name_slug
 		
-		pages = Page.objects.filter(category=category)
+		pages = Page.objects.filter(category=category).order_by('-views')
 		
 		context_dict['pages'] = pages
 		context_dict['category'] = category
 	except Category.DoesNotExist:
 		pass
+
+	result_list = []
+	if request.method == 'POST':
+		query = request.POST['query'].strip()
+		if query:
+		# Run our Bing function to get the results list!
+			result_list = run_query(query)
+		context_dict['result_list'] = result_list
+		context_dict['query'] = query
+
+	if not context_dict['query']:
+		context_dict['query'] = category.name
+
 		
 	return render(request, 'rango/category.html', context_dict)
 
@@ -176,7 +194,7 @@ def user_logout(request):
 	return HttpResponseRedirect('/rango/')"""
 
 
-def search(request):
+"""def search(request):
 
     result_list = []
 
@@ -187,4 +205,37 @@ def search(request):
             # Run our Bing function to get the results list!
             result_list = run_query(query)
 
-    return render(request, 'rango/search.html', {'result_list': result_list})
+    return render(request, 'rango/search.html', {'result_list': result_list})"""
+
+def track_url(request):
+	page_id = None
+	url = '/rango/'
+	if request.method == 'GET':
+		if 'page_id' in request.GET:
+			page_id = request.GET['page_id']
+			try:
+				page = Page.objects.get(id=page_id)
+				page.views = page.views + 1
+				page.save()
+				url = page.url
+			except:
+				pass
+	return HttpResponseRedirect(url)
+
+
+def profile(request):
+	context = RequestContext(request)
+	cat_list = Category.objects.all()
+	context_dict = {'cat_list': cat_list}
+	u = User.objects.get(username=request.user)
+	try:
+		up = UserProfile.objects.get(user=u)
+	except:
+		up = None
+
+	context_dict['user'] = u
+	context_dict['userprofile'] = up
+	return render_to_response('rango/profile.html', context_dict, context)
+
+
+	
