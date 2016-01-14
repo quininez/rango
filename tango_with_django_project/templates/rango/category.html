@@ -35,6 +35,7 @@
                                 <div class="list-group-item">
                                     <h4 class="list-group-item-heading"><a href="{{ result.link }}">{{ result.title }}</a></h4>
                                     <p class="list-group-item-text">{{ result.summary }}</p>
+                                    <button data-catid="{{category.id}}" data-title="{{ result.title }}" data-url="{{ result.link }}" class="rango-add btn btn-mini btn-info" type="button">Add</button>
                                 </div>
                             {% endfor %}
                         </div>
@@ -48,6 +49,17 @@
 
     <div class="jumbotron">
     <h1>{{ category_name }}</h1>
+
+    {% if user.is_authenticated %}
+    <button id="like" data-catid="{{category.id}}" class="btn btn-primary" type="button">
+        <span class="glyphicon glyphicon-thumbs-up"></span>
+        Like
+        </button>
+    {% endif %}
+    
+    
+    <div id="like_count">{{ category.likes }} Likes </div>
+
     {% if category %}
         {% if pages %}
         <ul>
@@ -65,6 +77,7 @@
         {% endif %}
 
         {% if user.is_authenticated %}
+
                 <a href="/rango/category/{{category.slug}}/add_page/">Add a Page</a>
         {% endif %}
         {% else %}
